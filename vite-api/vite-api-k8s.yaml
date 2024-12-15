@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-vite-api
+spec:
+  selector:
+    matchLabels:
+      app: flask-vite-api
+  template:
+    metadata:
+      labels:
+        app: flask-vite-api
+    spec:
+      containers:
+      - name: flask-vite-api
+        image: localhost:5000/flask-vite-api:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 8000
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name:  flask-vite-api-service
+# spec:
+#   selector:
+#     app:  flask-vite-api
+#   type:  NodePort
+#   ports:
+#   - name:  flask-8000
+#     port:  8000
+#     targetPort:  8000
+#     nodePort: 30001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  flask-vite-api-service
+spec:
+  selector:
+    app:  flask-vite-api
+  type:  NodePort
+  ports:
+  - nodePort: 30001
+    port:  8000
+    targetPort:  8000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flask-vite-api-service-ingress
+  labels:
+    name: flask-vite-api-service-ingress
+spec:
+  rules:
+  - host: app.somco.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/flask-vite-api"
+        backend:
+          service:
+            name: flask-vite-api-service
+            port: 
+              number: 80

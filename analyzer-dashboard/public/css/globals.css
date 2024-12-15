@@ -1,0 +1,8 @@
+.themeFontColor {
+    color: red;
+    background-color: whitesmoke;
+}
+
+tr {
+    cursor: pointer;
+}

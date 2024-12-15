@@ -1,0 +1,11 @@
+.logo {
+    height: 75px;
+    cursor: pointer;
+}
+
+.subtitleStyle {
+    font-style: italic;
+    font-size: x-large;
+    color: coral;
+    
+}
